@@ -1,0 +1,155 @@
+/* V10: an album-inspired coastal paper collage and a softly lit lyric stage.
+   Everything is CSS only, behind the controls, and independent of the song. */
+body {
+    background: #e7edeb;
+}
+.album-ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    contain: paint;
+    background:
+        radial-gradient(ellipse 46% 63% at 7% 76%, rgba(113, 164, 165, .34), transparent 81%),
+        radial-gradient(ellipse 36% 45% at 92% 23%, rgba(221, 162, 148, .31), transparent 86%),
+        radial-gradient(ellipse 55% 38% at 50% 103%, rgba(85, 130, 150, .29), transparent 89%),
+        linear-gradient(128deg, #d7e6e0 0%, #f3f1e8 43%, #d1ddd9 72%, #ccdbe0 100%);
+}
+.ambient-wash,
+.ambient-waterline,
+.ambient-paper-cut,
+.ambient-sun {
+    position: absolute;
+    pointer-events: none;
+}
+.ambient-wash {
+    inset: -10%;
+    background:
+        radial-gradient(ellipse 30% 24% at 19% 33%, rgba(107, 155, 168, .24), transparent 90%),
+        radial-gradient(ellipse 27% 31% at 80% 71%, rgba(124, 172, 158, .29), transparent 91%),
+        radial-gradient(ellipse 44% 20% at 60% 10%, rgba(255, 255, 245, .65), transparent 94%);
+    animation: albumWash 34s ease-in-out infinite alternate;
+}
+.ambient-waterline {
+    inset: 44% -16% -36%;
+    opacity: .43;
+    background:
+        repeating-radial-gradient(ellipse 67% 59% at 26% 123%,
+            transparent 0 25px, rgba(69, 113, 130, .105) 26px 27px, transparent 28px 52px),
+        linear-gradient(to bottom, transparent, rgba(124, 164, 170, .16));
+    transform: rotate(-7deg);
+    animation: waterlineDrift 36s ease-in-out infinite alternate;
+}
+.ambient-paper-cut {
+    border: 1px solid rgba(74, 114, 131, .18);
+    opacity: .65;
+    filter: blur(.5px);
+}
+.ambient-paper-cut-one {
+    width: min(51vw, 620px);
+    aspect-ratio: 1 / 1.17;
+    left: -16%;
+    top: 12%;
+    border-radius: 40% 59% 63% 31% / 35% 31% 59% 62%;
+    transform: rotate(-22deg);
+    background: linear-gradient(147deg, rgba(106, 157, 168, .21), rgba(181, 213, 203, .11) 51%, transparent 77%);
+    box-shadow: 18px 26px 70px rgba(121, 165, 172, .07);
+}
+.ambient-paper-cut-two {
+    width: min(34vw, 430px);
+    aspect-ratio: 1.3;
+    right: -9%;
+    bottom: 5%;
+    border-radius: 66% 30% 43% 58% / 37% 57% 40% 63%;
+    transform: rotate(16deg);
+    background: linear-gradient(150deg, rgba(224, 178, 164, .27), rgba(138, 177, 178, .17));
+}
+.ambient-sun {
+    width: min(33vw, 370px);
+    aspect-ratio: 1;
+    top: 7%;
+    right: 7%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 217, 185, .38), rgba(233, 182, 166, .12) 55%, transparent 75%);
+    filter: blur(9px);
+    animation: sunBreath 26s ease-in-out infinite alternate;
+}
+/* The existing album cover stays visible as a soft print in the collage. */
+.album-texture {
+    opacity: .16;
+    background-position: 56% 43%;
+    background-size: min(88vw, 1090px) auto;
+    filter: grayscale(.84) contrast(.9) saturate(.5);
+}
+.scene-glow { opacity: .76; }
+/* A diffused wash behind the lyric stack, not another rectangular card. */
+.experience-center .lyric-area {
+    position: relative;
+    isolation: isolate;
+    padding-inline: clamp(9px, 2.7vw, 27px);
+}
+.experience-center .lyric-area::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: -15% -13%;
+    border-radius: 43% 57% 47% 53% / 51% 44% 56% 49%;
+    background:
+        radial-gradient(ellipse 52% 47% at 51% 51%, rgba(248, 249, 242, .94), rgba(239, 247, 243, .68) 67%, transparent 100%),
+        radial-gradient(ellipse 66% 55% at 37% 63%, rgba(169, 208, 197, .25), transparent 82%);
+    box-shadow: 0 0 77px 31px rgba(245, 248, 243, .23);
+    opacity: .9;
+    animation: lyricMist 19s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+.experience-center .lyric-area::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 7% 1%;
+    border-radius: 50%;
+    border-top: 1px solid rgba(96, 147, 156, .15);
+    border-bottom: 1px solid rgba(194, 147, 137, .13);
+    transform: rotate(-8deg);
+    pointer-events: none;
+}
+/* More contrast for karaoke even when backgrounds shift with the music. */
+.lyric-area .current-lyric { color: #354f5d; text-shadow: 0 2px 24px rgba(255, 255, 250, .71); }
+.current-lyric .word { color: rgba(70, 100, 113, .73); }
+.current-lyric .word.in-progress { color: #466c7b; }
+.current-lyric .word.lit { color: #344f5e; }
+.lyric-area .lyric-neighbor { color: #728c97; }
+.film-window { box-shadow: 0 5px 23px rgba(59, 93, 102, .10); }
+.film-module { filter: drop-shadow(0 6px 20px rgba(73, 120, 125, .09)); }
+.music-dock { box-shadow: 0 16px 48px rgba(75, 113, 124, .13); }
+@keyframes albumWash {
+    from { transform: translate3d(-1.4%, 0, 0) scale(1); }
+    to { transform: translate3d(1.6%, -1.3%, 0) scale(1.035); }
+}
+@keyframes waterlineDrift {
+    from { transform: rotate(-7deg) translate3d(0, 0, 0); }
+    to { transform: rotate(-5deg) translate3d(1%, -2%, 0); }
+}
+@keyframes sunBreath {
+    from { transform: translate3d(0, 0, 0) scale(.97); }
+    to { transform: translate3d(-2%, 1.5%, 0) scale(1.06); }
+}
+@keyframes lyricMist {
+    from { transform: rotate(-1deg) scale(.99); }
+    to { transform: rotate(2deg) scale(1.02); }
+}
+@media (max-width: 650px) {
+    .ambient-paper-cut-one { left: -40%; width: 91vw; top: 16%; opacity: .38; }
+    .ambient-paper-cut-two { right: -42%; width: 77vw; bottom: 11%; opacity: .38; }
+    .ambient-sun { width: 68vw; right: -15%; top: 9%; }
+    .album-texture { opacity: .12; background-size: 130vw auto; }
+    .experience-center .lyric-area::before { inset: -11% -4%; opacity: .89; }
+    .experience-center .lyric-area::after { inset: 4% 1%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ambient-wash, .ambient-waterline, .ambient-sun,
+    .experience-center .lyric-area::before { animation: none !important; }
+}
+/* Keep the large offscreen collage shapes from creating phone-width overflow. */
+html { overflow-x: clip; }

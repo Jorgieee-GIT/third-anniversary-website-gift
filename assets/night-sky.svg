@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 530">
+  <defs>
+    <linearGradient id="a" x2="1" y2="1"><stop stop-color="#0c162e"/><stop offset="1" stop-color="#25385e"/></linearGradient>
+    <radialGradient id="b"><stop stop-color="#d4a86f" stop-opacity=".24"/><stop offset="1" stop-color="#d4a86f" stop-opacity="0"/></radialGradient>
+    <pattern id="c" width="117" height="123" patternUnits="userSpaceOnUse"><g fill="#fce1a1"><circle cx="9" cy="22" r="1.1"/><circle cx="66" cy="11" r=".8"/><circle cx="91" cy="78" r="1.4"/><circle cx="38" cy="101" r=".65"/></g></pattern>
+  </defs>
+  <path d="M0 0h1000v530H0Z" fill="url(#a)"/>
+  <ellipse cx="791" cy="214" rx="246" ry="204" fill="url(#b)"/>
+  <path d="M324 0h676v530H324Z" fill="url(#c)" opacity=".48"/>
+  <g stroke="#f4ce89" fill="none" opacity=".52"><path d="m676 148 54 43 75-62 60 75 76-30" stroke-dasharray="3 7"/><circle cx="676" cy="148" r="2"/><circle cx="730" cy="191" r="2"/><circle cx="865" cy="204" r="2"/><circle cx="941" cy="174" r="2"/></g>
+  <path d="M805 109q3 17 19 20-16 3-19 20-3-17-19-20 16-3 19-20Z" fill="#ffe1a1" opacity=".66"/>
+  <path d="M0 480q120-54 258-24t249 2q140-63 259-29t234-2v103H0Z" fill="#131e37" opacity=".59"/>
+</svg>

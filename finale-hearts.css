@@ -1,0 +1,197 @@
+/* The last little surprises from Jorge to Jasmin.
+   Designed to sit quietly over the 0.1 flaws and all. paper palette. */
+
+.hidden-hearts {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+}
+.secret-heart {
+    position: absolute;
+    top: var(--heart-y, 24%);
+    left: var(--heart-x, 84%);
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border: 1px solid rgba(110, 142, 156, .25);
+    border-radius: 44% 56% 42% 58%;
+    background: rgba(248, 250, 246, .82);
+    box-shadow: 0 8px 24px rgba(77, 100, 114, .12), inset 0 1px 0 rgba(255, 255, 255, .8);
+    color: #7897a6;
+    font: 500 31px/1 'Caveat', cursive;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 1;
+    animation: paperHeartFloat 4.2s ease-in-out infinite alternate, paperHeartEnter .8s ease-out both;
+    transition: background .2s, box-shadow .25s;
+}
+.secret-heart:not([hidden]):hover,
+.secret-heart:not([hidden]):focus-visible {
+    background: #fff;
+    box-shadow: 0 10px 32px rgba(91, 130, 151, .22), 0 0 0 5px rgba(126, 157, 170, .12);
+}
+.secret-heart[hidden], .secret-heart-note[hidden] { display: none !important; }
+body:not(.music-playing) .secret-heart { animation-play-state: paused; }
+@keyframes paperHeartEnter { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: blur(0); } }
+@keyframes paperHeartFloat {
+    from { transform: translate3d(-3px, 7px, 0) rotate(-9deg); }
+    to { transform: translate3d(5px, -11px, 0) rotate(7deg); }
+}
+.secret-heart-note {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(132px, 18vh, 195px);
+    transform: translate3d(-50%, 18px, 0) rotate(-2deg) scale(.96);
+    opacity: 0;
+    width: min(315px, calc(100vw - 35px));
+    max-width: 100%;
+    padding: 19px 24px 18px;
+    background: #fbfcf8;
+    border: 1px solid rgba(114, 145, 159, .22);
+    border-radius: 5px 9px 6px 11px;
+    box-shadow: 0 18px 48px rgba(57, 84, 97, .18);
+    color: #455f6f;
+    pointer-events: auto;
+    z-index: 3;
+    text-align: left;
+    transition: opacity .45s ease, transform .65s cubic-bezier(.18,.76,.26,1);
+}
+.secret-heart-note.visible { opacity: 1; transform: translate3d(-50%, 0, 0) rotate(-1deg) scale(1); }
+.secret-heart-label { display: block; font: 600 10px/1.5 'Quicksand', sans-serif; letter-spacing: .035em; color: #91a2ad; }
+.secret-heart-note p { font: 500 clamp(23px, 4vw, 32px)/1.16 'Caveat', cursive; margin: 9px 0 5px; color: #4e6b7a; }
+.secret-heart-signature { display: block; font: 600 16px 'Caveat', cursive; text-align: right; color: #7c9dab; }
+.secret-heart-close {
+    position: absolute;
+    right: 6px;
+    top: 3px;
+    border: 0;
+    padding: 5px 11px;
+    background: transparent;
+    color: #8195a0;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* The letter types into a fixed piece of paper so its layout never jumps. */
+.letter-sheet {
+    background-image: repeating-linear-gradient(transparent 0, transparent 31px, rgba(114,151,167,.065) 32px, transparent 33px);
+    background-position: 0 27px;
+}
+.letter-writing-area {
+    position: relative;
+    min-height: min(31dvh, 240px);
+    text-align: left;
+    border-left: 2px solid rgba(143, 167, 177, .21);
+    padding: 0 0 0 17px;
+}
+.letter-writing-area .letter-text {
+    font: 500 clamp(17px, 2.2vw, 21px)/1.35 'Caveat', cursive;
+    color: #536f7c;
+    letter-spacing: .005em;
+    text-align: left;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    min-height: min(31dvh, 240px);
+    max-height: min(31dvh, 280px);
+    white-space: pre-wrap;
+    margin: 0;
+    padding: 0 10px 0 0;
+}
+.letter-text.writing::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: #8ca5b1;
+    margin-left: 3px;
+    vertical-align: -.16em;
+    animation: handwritingBlink .85s step-end infinite;
+}
+@keyframes handwritingBlink { 50% { opacity: 0; } }
+.letter-skip {
+    margin: 9px auto 4px;
+    padding: 7px 12px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #9fb2ba;
+    color: #718d9a;
+    font: 600 11px 'Quicksand', sans-serif;
+    cursor: pointer;
+}
+.letter-skip[hidden] { display: none !important; }
+.letter-sheet .letter-signature,
+.letter-sheet .letter-actions {
+    transition: opacity .7s ease, transform .7s cubic-bezier(.17,.67,.24,1);
+}
+.letter-sheet:not(.letter-complete) .letter-signature,
+.letter-sheet:not(.letter-complete) .letter-actions {
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    visibility: hidden;
+}
+.letter-sheet.letter-complete .letter-signature,
+.letter-sheet.letter-complete .letter-actions {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+.letter-sheet .letter-actions .primary-action { gap: 28px; }
+
+/* A tiny rewind ritual, not another copy of the gift opening. */
+.replay-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+    background: rgba(246, 248, 245, .94);
+    backdrop-filter: blur(14px);
+    color: #698694;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .65s ease, visibility .65s;
+    overflow: hidden;
+}
+.replay-veil.visible { opacity: 1; visibility: visible; pointer-events: auto; }
+.replay-veil > span:nth-child(2) { font: 600 27px/1.2 'Caveat', cursive; }
+.replay-veil-heart { font: 500 64px/1 'Caveat', cursive; opacity: .7; animation: replayBeat 1.4s ease-in-out infinite alternate; }
+.replay-veil-film {
+    width: min(330px, 65vw);
+    height: 20px;
+    margin-top: 9px;
+    border-block: 3px solid rgba(115, 149, 162, .23);
+    background: repeating-linear-gradient(90deg, transparent 0 15px, rgba(113, 150, 164, .21) 15px 21px, transparent 21px 43px);
+    mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+    animation: rewindFilm 1s linear infinite;
+}
+@keyframes replayBeat { to { transform: scale(1.08); opacity: 1; } }
+@keyframes rewindFilm { to { background-position-x: -130px; } }
+
+@media (max-width: 800px) {
+    .secret-heart { width: 40px; height: 40px; font-size: 28px; }
+    .letter-sheet { padding-top: 47px; }
+    .letter-writing-area { min-height: min(31dvh, 220px); }
+    .letter-writing-area .letter-text { min-height: min(31dvh, 220px); max-height: min(31dvh, 220px); }
+}
+@media (max-width: 480px) {
+    .secret-heart { width: 35px; height: 35px; font-size: 25px; }
+    .secret-heart-note { bottom: clamp(123px, 19vh, 170px); padding: 17px 20px 15px; }
+    .letter-sheet { padding-inline: 22px; }
+    .letter-sheet h2 { margin: 14px 0; }
+    .letter-sheet .letter-greeting { margin: 8px 0; }
+    .letter-sheet .letter-signature { margin: 11px 0; }
+    .letter-sheet .letter-actions { margin-top: 12px; }
+    .letter-writing-area { min-height: min(27dvh, 195px); }
+    .letter-writing-area .letter-text { min-height: min(27dvh, 195px); max-height: min(27dvh, 195px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .secret-heart, .replay-veil-film, .replay-veil-heart, .letter-text.writing::after { animation: none !important; }
+    .secret-heart-note, .replay-veil, .letter-sheet .letter-signature, .letter-sheet .letter-actions { transition: none !important; }
+}

@@ -1,0 +1,32 @@
+/* Audio-driven word movement for the moving-lyrics experience. */
+.experience-center .current-lyric .word {
+    opacity: var(--word-opacity, 1);
+    transform: translate3d(0, var(--word-rise, 0), 0) scale(var(--word-scale, 1));
+    transform-origin: center bottom;
+    transition: color .24s ease, text-shadow .3s ease, opacity .16s linear, transform .16s linear;
+    will-change: color, opacity, transform;
+}
+
+.experience-center .current-lyric .word.in-progress {
+    color: #315d6d;
+    text-shadow: 0 0 24px rgba(113, 160, 174, .36), 0 2px 4px rgba(255, 255, 255, .58);
+}
+
+.experience-center .current-lyric .word.lit {
+    color: #304e5d;
+    text-shadow: 0 2px 14px rgba(141, 170, 181, .28);
+}
+
+.experience-center .lyric-area .lyric-ghost {
+    filter: blur(0);
+    text-shadow: 0 4px 30px rgba(255, 255, 255, .68);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .experience-center .current-lyric .word {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto;
+    }
+}

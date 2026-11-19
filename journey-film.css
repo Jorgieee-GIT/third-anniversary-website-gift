@@ -1,0 +1,619 @@
+/* Frames of Us. synchronized analog film and softly morphing album landscapes.
+   This layer intentionally comes after album-theme.css. */
+:root {
+    --film-paper: #f8faf7;
+    --film-ink: #4b6371;
+    --film-metal: #8297a1;
+}
+
+/* Each scene dissolves into the next over two seconds. The texture and weather
+   stay subtle enough for the song lyrics to remain readable. */
+.living-scenery {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: paint;
+}
+.scenery-panel {
+    position: absolute;
+    inset: -6%;
+    opacity: 0;
+    transform: translateZ(0);
+    transition: opacity 2.3s ease-in-out;
+    pointer-events: none;
+    will-change: opacity;
+}
+.scenery-dawn {
+    background:
+        radial-gradient(ellipse 38% 27% at 50% 28%, rgba(250,253,253,.86), transparent 95%),
+        radial-gradient(ellipse 34% 22% at 21% 71%, rgba(175,194,201,.30), transparent 87%),
+        linear-gradient(175deg, rgba(251,252,247,.23) 0%, rgba(198,215,218,.17) 98%);
+}
+.scenery-clouds {
+    background:
+        radial-gradient(ellipse 43% 16% at 14% 35%, rgba(169,189,197,.30), transparent 88%),
+        radial-gradient(ellipse 36% 17% at 84% 51%, rgba(163,183,194,.29), transparent 90%),
+        radial-gradient(ellipse 50% 20% at 43% 88%, rgba(197,210,211,.38), transparent 83%);
+    animation: driftScenery 42s ease-in-out infinite alternate;
+}
+.scenery-shore {
+    background:
+        radial-gradient(ellipse 52% 28% at 75% 18%, rgba(246,249,247,.72), transparent 81%),
+        repeating-linear-gradient(174deg, transparent 0 36px, rgba(133,159,172,.034) 37px 39px, transparent 40px 74px),
+        linear-gradient(180deg, rgba(241,248,247,.03) 17%, rgba(170,194,202,.20) 71%, rgba(126,157,170,.23) 100%);
+    animation: shoreBreath 27s ease-in-out infinite alternate;
+}
+.scenery-sunlight {
+    background:
+        radial-gradient(ellipse 32% 44% at 76% 28%, rgba(250,244,224,.64), transparent 90%),
+        linear-gradient(108deg, transparent 42%, rgba(255,250,234,.32) 53%, transparent 68%),
+        radial-gradient(ellipse 42% 22% at 15% 91%, rgba(180,191,183,.28), transparent 90%);
+    animation: lightShift 32s ease-in-out infinite alternate;
+}
+.scenery-evening {
+    background:
+        radial-gradient(ellipse 36% 30% at 82% 39%, rgba(205,219,220,.38), transparent 82%),
+        radial-gradient(ellipse 50% 24% at 22% 77%, rgba(171,192,198,.31), transparent 85%),
+        linear-gradient(165deg, rgba(251,252,249,.04), rgba(156,185,198,.19));
+    animation: driftScenery 46s ease-in-out infinite alternate-reverse;
+}
+body:not([data-scene]) .scenery-dawn,
+body[data-scene="0"] .scenery-dawn,
+body[data-scene="1"] .scenery-clouds,
+body[data-scene="2"] .scenery-shore,
+body[data-scene="3"] .scenery-sunlight,
+body[data-scene="4"] .scenery-evening { opacity: 1; }
+@keyframes driftScenery { to { transform: translate3d(2.4%, -1.4%, 0) scale(1.06); } }
+@keyframes shoreBreath { to { transform: translate3d(0, -2.2%, 0) scale(1.045); } }
+@keyframes lightShift { to { transform: translate3d(-1.5%, 1%, 0) scale(1.04); } }
+.memory-echo {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.8s ease;
+    overflow: hidden;
+}
+.memory-echo.visible { opacity: .23; }
+.memory-echo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: grayscale(.65) saturate(.56) contrast(.75);
+    transform: scale(1.03);
+}
+
+/* Keep every karaoke word legible against the almost-white album artwork. */
+.current-lyric .word { color: rgba(74, 101, 113, .68); }
+.current-lyric .word.in-progress { color: #506f7f; }
+.current-lyric .word.lit { color: #405865; }
+
+/* The central player has one anchored film strip beneath its lyrics. */
+.experience {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: center;
+    padding: 30px clamp(18px, 4vw, 54px) 14px;
+    gap: 4px;
+    min-width: 0;
+}
+.experience-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: min(100%, 860px);
+    margin-top: 0;
+}
+.experience-center .top-quote { margin-bottom: clamp(10px, 2vh, 24px); }
+.experience-center .lyric-area { min-height: clamp(150px, 26vh, 252px); }
+.experience-center .scene-caption { margin-top: clamp(5px, 1.5vh, 12px); }
+.postcard, .side-word, .bottom-note { display: none !important; }
+.chapter-rail { top: 39%; }
+
+.film-module {
+    position: relative;
+    z-index: 4;
+    width: min(100%, 970px);
+    min-width: 0;
+    margin: 0 auto;
+    flex: 0 0 auto;
+    color: var(--film-ink);
+    user-select: none;
+    -webkit-user-select: none;
+}
+.film-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 6px 7px;
+}
+.film-heading-title { display: flex; flex-direction: column; gap: 1px; }
+.film-kicker { font: 8px var(--mono); letter-spacing: .18em; color: #95a4ab; }
+.film-heading-title strong { font: 400 23px/1 var(--serif); letter-spacing: -.055em; color: #506775; }
+.film-heading-title em { color: #829baa; }
+.film-now {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #798d98;
+    font: 10px var(--mono);
+    min-width: 0;
+    max-width: 65%;
+    white-space: nowrap;
+}
+#filmTitleLabel { overflow: hidden; text-overflow: ellipsis; }
+.film-now-divider { color: #acbbc2; }
+.film-frame-count { margin-left: 7px; color: #657e8c; }
+.film-window {
+    position: relative;
+    height: clamp(123px, 17.5vh, 162px);
+    width: 100%;
+    background: linear-gradient(180deg, #97aab3 0%, #869ba6 48%, #7f959f 100%);
+    box-shadow: 0 8px 23px rgba(65,88,99,.16), inset 0 1px rgba(255,255,255,.30);
+    border: 1px solid rgba(105,134,145,.30);
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    contain: paint;
+}
+.film-window:active { cursor: grabbing; }
+.film-window::before, .film-window::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10px;
+    z-index: 3;
+    background: repeating-linear-gradient(90deg, transparent 0 13px, #e7eeeb 13px 26px, transparent 26px 36px);
+    border-block: 1px solid rgba(45,68,80,.16);
+    pointer-events: none;
+}
+.film-window::before { top: 0; }
+.film-window::after { bottom: 0; }
+.film-reel {
+    display: flex;
+    align-items: center;
+    gap: clamp(9px, 1.25vw, 13px);
+    width: max-content;
+    height: 100%;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    padding: 15px 0;
+}
+.film-frame {
+    appearance: none;
+    flex: 0 0 clamp(146px, 17vw, 188px);
+    height: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 5px 5px 4px;
+    border: 1px solid rgba(236,243,242,.8);
+    border-radius: 1px;
+    background: #f2f4ef;
+    box-shadow: 0 2px 8px rgba(49,68,75,.16);
+    text-align: left;
+    color: #59717c;
+    opacity: .62;
+    transform: scale(.93);
+    transition: transform .6s cubic-bezier(.2,.8,.2,1), opacity .6s ease, box-shadow .6s ease;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.film-frame.is-focused {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 3px 16px rgba(49,68,75,.23);
+}
+.film-frame:focus-visible { outline: 2px solid #f3f7f2; outline-offset: -3px; }
+.film-frame-art {
+    position: relative;
+    height: calc(100% - 24px);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(ellipse at 40% 40%, #eff1ec 0%, #b9cbd1 60%, #8ba1ac 100%);
+}
+.film-art-1 { background: radial-gradient(ellipse at 65% 26%, #f1f1eb, #b6c7ca 60%, #96abb1); }
+.film-art-2 { background: linear-gradient(145deg, #b5c7cc, #edf0e9 60%, #a3b4b9); }
+.film-art-3 { background: radial-gradient(ellipse at 43% 60%, #eaf0ed, #c4cfd0 63%, #8ca7af); }
+.film-art-4 { background: linear-gradient(20deg, #91a9b2, #e1e9e6 72%, #c6d3d5); }
+.film-art-5 { background: radial-gradient(ellipse at 38% 35%, #f8f9f4, #b9cbd0 64%, #8cabb4); }
+.film-frame-art::before {
+    content: '';
+    position: absolute;
+    inset: 8%;
+    border: 1px solid rgba(255,255,255,.21);
+    border-radius: 50%;
+    transform: rotate(-17deg) scaleX(1.4);
+}
+.film-frame-art img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: saturate(.76) contrast(.96);
+    pointer-events: none;
+}
+.film-placeholder-mark {
+    font: italic 42px var(--serif);
+    color: rgba(250,253,251,.84);
+    text-shadow: 0 2px 12px rgba(92,120,136,.18);
+}
+.film-frame-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 5px 2px 0;
+    white-space: nowrap;
+}
+.film-frame-meta span { font: italic 12px var(--serif); overflow: hidden; text-overflow: ellipsis; }
+.film-frame-meta small { font: 8px var(--mono); color: #9caab0; flex-shrink: 0; }
+.film-focus-marker {
+    position: absolute;
+    height: calc(100% - 16px);
+    width: 2px;
+    border-radius: 2px;
+    left: calc(50% - 1px);
+    top: 8px;
+    background: rgba(249,252,249,.33);
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: soft-light;
+}
+.film-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 4px 0;
+    color: #879aa4;
+    font: 8px var(--mono);
+    letter-spacing: .075em;
+}
+.film-footer > span:first-child { display: flex; gap: 6px; align-items: center; }
+.film-live-dot { background: #8fa9a5; display: inline-block; height: 5px; width: 5px; border-radius: 50%; }
+.film-hint { text-align: right; }
+
+@media (max-width: 1100px) {
+    .chapter-rail { display: none; }
+    .experience-center { width: min(100%, 760px); }
+}
+@media (max-width: 800px) {
+    .experience { padding: 26px 15px 10px; }
+    .experience-center { margin: 0; width: 100%; }
+    .experience-center .lyric-area { min-height: clamp(140px, 26vh, 224px); }
+    .experience-center .top-quote { margin-bottom: 12px; }
+    .film-module { width: 100%; }
+    .film-frame { flex-basis: clamp(150px, 28vw, 183px); }
+    .film-heading-title strong { font-size: 22px; }
+}
+@media (max-width: 480px) {
+    .experience { padding: 23px 9px 8px; }
+    .scene-meta { top: 3px; }
+    .experience-center .lyric-area { min-height: clamp(142px, 24vh, 188px); }
+    .experience-center .top-quote { margin-bottom: 6px; }
+    .experience-center .scene-caption { margin-top: 5px; }
+    .film-heading { margin-bottom: 6px; }
+    .film-kicker { font-size: 7px; letter-spacing: .10em; }
+    .film-heading-title strong { font-size: 20px; }
+    .film-now { gap: 5px; font-size: 8px; max-width: 50%; }
+    .film-frame-count { display: none; }
+    .film-window { height: clamp(123px, 17vh, 145px); }
+    .film-frame { flex-basis: clamp(128px, 41vw, 157px); }
+    .film-frame-meta span { font-size: 11px; }
+    .film-frame-meta small { font-size: 7px; }
+    .film-footer { font-size: 7px; letter-spacing: 0; }
+    .film-hint { max-width: 54%; }
+}
+@media (max-height: 700px) {
+    .experience { padding-top: 23px; }
+    .experience-center .lyric-area { min-height: 140px; }
+    .experience-center .top-quote { margin-bottom: 5px; }
+    .experience-center .scene-caption { margin-top: 2px; }
+    .film-window { height: 121px; }
+    .film-heading-title strong { font-size: 19px; }
+    .film-heading { margin-bottom: 3px; }
+    .film-footer { padding-top: 4px; }
+}
+@media (max-height: 590px) {
+    .experience-center .journey-eyebrow, .experience-center .top-quote { display: none; }
+    .experience-center .lyric-area { min-height: 126px; }
+    .film-window { height: 111px; }
+    .film-kicker { display: none; }
+    .film-heading-title strong { font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .scenery-panel { transition: none !important; animation: none !important; }
+    .film-frame { transition: none !important; }
+    .memory-echo { transition: none !important; }
+}
+
+
+/* Cleaner main screen. Lyrics and memories are the focus. */
+.intro-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+}
+.intro-center { margin: 0; padding: 8px 0; }
+.intro-center h1 {
+    font-family: var(--serif);
+    font-size: clamp(58px, 8.5vw, 103px);
+    line-height: .86;
+    letter-spacing: -.025em;
+    margin: 12px 0 14px;
+}
+.intro-names { font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: .01em; margin-bottom: 8px; }
+.intro-anniversary { font: 600 10px var(--sans); letter-spacing: .10em; margin: 0 0 8px; }
+.intro-copy { font: 500 12px/1.4 var(--sans); margin: 0 0 18px; }
+.gift-open-button { font-family: var(--sans); font-weight: 700; text-transform: none; letter-spacing: 0; }
+.topbar { justify-content: space-between; }
+.topbar .brand { font-size: clamp(23px, 2.2vw, 33px); font-family: var(--serif); letter-spacing: -.01em; }
+.experience { padding-top: 12px; }
+.experience-center { margin: 0; }
+.current-lyric { font-family: var(--sans); font-weight: 600; font-size: clamp(29px, 4.25vw, 58px); line-height: 1.34; letter-spacing: -.04em; }
+.lyric-neighbor { font-family: var(--sans); font-size: clamp(12px, 1.45vw, 17px); font-weight: 500; }
+.interlude-message { display: none !important; }
+.lyric-secret { font-family: var(--sans); font-size: 20px; letter-spacing: 0; margin-top: 4px; padding: 3px 15px; }
+.film-heading-title strong { font-family: var(--serif); font-size: 31px; line-height: .88; letter-spacing: -.01em; }
+.film-now { font-family: var(--sans); font-weight: 600; letter-spacing: .01em; }
+.film-frame-meta span { font-family: var(--serif); font-size: 18px; font-style: normal; line-height: 1; }
+.film-frame-meta small { font-family: var(--sans); font-weight: 600; letter-spacing: .01em; }
+.film-frame-meta { align-items: center; }
+.film-placeholder-mark { font: 40px var(--serif); }
+.track-info span { font-weight: 500; }
+.letter-sheet h2, .memories-sheet h2, .settings-sheet h2 { letter-spacing: -.01em; }
+@media (max-width: 800px) {
+    .current-lyric { font-size: clamp(27px, 7.2vw, 44px); }
+    .topbar .brand { font-size: 24px; }
+    .intro-center h1 { font-size: clamp(62px, 12vw, 87px); }
+}
+@media (max-width: 480px) {
+    .intro-center h1 { font-size: clamp(53px, 13vw, 68px); }
+    .intro-copy { font-size: 11px; }
+    .current-lyric { font-size: clamp(27px, 7.5vw, 35px); }
+    .film-heading-title strong { font-size: 25px; }
+    .film-now { font-size: 9px; }
+    .film-frame-meta span { font-size: 16px; }
+}
+
+@media (max-width: 360px) {
+    .topbar { gap: 4px; padding-inline: 8px; }
+    .topbar .brand { font-size: 20px; letter-spacing: -.015em; }
+    .top-actions { gap: 2px; }
+    .topbar .top-icon { width: 28px; height: 28px; }
+}
+.intro-center h1 em { white-space: nowrap; display: inline-block; }
+
+/* 15 personal photo slots, grouped by year with a compact editor. */
+.gift-tag small {
+    display: block;
+    font: 500 10px/1.5 var(--sans);
+    letter-spacing: .015em;
+    color: #778c97;
+    margin-top: 2px;
+}
+.memory-grid { display: block; }
+.memory-year-section + .memory-year-section { margin-top: 30px; }
+.memory-year-title {
+    font: 600 22px/1.2 var(--sans);
+    letter-spacing: .035em;
+    margin: 0 0 16px;
+    color: #78909b;
+    padding-bottom: 9px;
+    border-bottom: 1px solid rgba(113,139,150,.21);
+}
+.memory-year-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 17px;
+}
+.photo-editors { display: flex; flex-direction: column; gap: 9px; }
+.photo-year-group {
+    background: rgba(133,158,170,.07);
+    border: 1px solid rgba(113,141,154,.20);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.photo-year-group summary {
+    font: 700 13px var(--sans);
+    padding: 16px 17px;
+    cursor: pointer;
+    color: #57717f;
+    background: rgba(241,246,244,.64);
+    list-style-position: inside;
+}
+.photo-year-group summary:focus-visible { outline: 2px solid #819cac; outline-offset: -3px; }
+.photo-year-editors { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+@media (max-width: 800px) {
+    .memory-year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}
+@media (max-width: 480px) {
+    .memory-year-title { font-size: 19px; }
+    .memory-year-grid { gap: 10px; }
+    .photo-year-editors { padding: 8px; }
+    .gift-tag small { font-size: 9px; }
+}
+
+/* v4: lyric lines glide upward as a stable three-row stack.
+   Keeping the rows in fixed positions prevents jumps when text wraps. */
+.experience-center .lyric-area {
+    display: grid;
+    grid-template-rows: minmax(32px, 1fr) auto minmax(32px, 1fr);
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: clamp(220px, 29vh, 290px);
+    min-height: 0;
+    position: relative;
+    isolation: isolate;
+}
+.lyric-area .lyric-neighbor {
+    max-width: 100%;
+    max-height: 2.8em;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    text-wrap: balance;
+    line-height: 1.4;
+}
+.lyric-area .lyric-neighbor.above { align-self: end; }
+.lyric-area .lyric-neighbor.below { align-self: start; }
+.lyric-area .current-lyric {
+    align-self: center;
+    margin: 12px 0;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    overflow-wrap: break-word;
+    animation: none !important;
+}
+.lyric-area .lyric-ghost {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    text-align: center;
+    overflow: visible;
+    line-height: inherit;
+    animation: none !important;
+}
+
+/* Jorge's extra notes stay outside the lyric stack and only appear at
+   selected audio timestamps. Their opacity and drift follow song time. */
+.floating-notes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 3;
+}
+.floating-note {
+    position: absolute;
+    top: clamp(34px, 10%, 100px);
+    width: min(27vw, 278px);
+    color: #647e8a;
+    font: 600 clamp(22px, 2.5vw, 34px)/1.08 var(--serif);
+    text-align: center;
+    text-wrap: balance;
+    text-shadow: 0 2px 15px rgba(246,248,244,.85);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+.floating-note[data-side="left"] { left: clamp(18px, 6vw, 105px); }
+.floating-note[data-side="right"] { right: clamp(18px, 6vw, 105px); }
+
+/* Lyric-free mode lets the film take center stage instead of leaving an
+   empty lyric area. Center offset is measured against the actual viewport. */
+.experience-center {
+    transition: opacity .55s ease, transform .82s cubic-bezier(.2,.72,.18,1);
+    will-change: opacity, transform;
+}
+body.lyrics-hidden .experience-center {
+    opacity: 0;
+    transform: translate3d(0, -28px, 0) scale(.97);
+    pointer-events: none;
+}
+.film-module {
+    --film-lift: 0px;
+    transform-origin: center center;
+    transition: transform 1.08s cubic-bezier(.19,.76,.15,1);
+    will-change: transform;
+}
+body.lyrics-hidden .film-module {
+    transform: translate3d(0, var(--film-lift), 0) scale(1.10);
+}
+
+@media (max-width: 1100px) {
+    .floating-note {
+        top: 7%;
+        width: min(28vw, 210px);
+    }
+    .floating-note[data-side="left"] { left: 5%; }
+    .floating-note[data-side="right"] { right: 5%; }
+}
+@media (max-width: 800px) {
+    .experience-center .lyric-area { height: clamp(194px, 27vh, 250px); min-height: 0; }
+    .floating-note {
+        top: 6%;
+        width: min(48vw, 230px);
+        font-size: clamp(20px, 4vw, 29px);
+    }
+    .floating-note[data-side="left"] { left: 4%; }
+    .floating-note[data-side="right"] { right: 4%; }
+    body.lyrics-hidden .film-module { transform: translate3d(0, var(--film-lift), 0) scale(1.035); }
+
+    /* The lyrics switch must remain accessible on phones. */
+    .music-dock {
+        grid-template-columns: minmax(66px, .42fr) minmax(165px, 1.4fr) auto;
+        gap: 6px;
+    }
+    .dock-options {
+        display: flex;
+        width: auto;
+        min-width: 0;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0;
+    }
+    .dock-options .mini-visualizer,
+    .dock-options .volume-icon,
+    .dock-options #volumeBar { display: none !important; }
+    .dock-options #lyricsButton { font-size: 9px; padding: 9px 7px; }
+}
+@media (max-width: 480px) {
+    .experience-center .lyric-area { height: clamp(172px, 25vh, 214px); }
+    .floating-note { top: 5%; font-size: 23px; width: 52%; }
+    .floating-note[data-side="left"] { left: 3%; }
+    .floating-note[data-side="right"] { right: 3%; }
+    .music-dock {
+        margin-inline: 7px;
+        padding: 8px 7px;
+        grid-template-columns: minmax(50px, .38fr) minmax(154px, 1.5fr) 51px;
+        gap: 4px;
+    }
+    .music-dock .dock-vinyl { display: none; }
+    .music-dock .track-info { max-width: 100%; }
+    .dock-options #lyricsButton { font-size: 8px; padding: 8px 5px; }
+}
+@media (max-width: 360px) {
+    .experience-center .lyric-area { height: clamp(160px, 24vh, 192px); }
+    .music-dock {
+        grid-template-columns: 43px minmax(145px, 1fr) 48px;
+        gap: 3px;
+        padding: 7px 5px;
+    }
+    .player-buttons { gap: 9px; }
+    .floating-note { font-size: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .experience-center, .film-module { transition: none !important; }
+    .lyric-area .lyric-ghost { display: none !important; }
+    .floating-note { will-change: auto; }
+}
+
+/* V6: editable little-message groups in the personalization panel. */
+.message-editor-sections { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.message-editor-hint { font-size: 12px; line-height: 1.6; color: #788e9a; padding: 0 16px; margin: 14px 0 2px; }
+.message-editor-fields { padding: 12px; display: grid; gap: 10px; }
+.message-editor-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.message-editor-label { font: 700 10px/1.5 var(--sans); letter-spacing: .075em; color: #6f8794; }
+#settingsForm .message-editor-field textarea { width: 100%; min-height: 64px; resize: vertical; }
+@media (max-width: 480px) {
+    .message-editor-fields { padding: 8px; }
+    .message-editor-hint { padding: 0 12px; }
+}

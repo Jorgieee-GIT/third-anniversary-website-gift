@@ -1,0 +1,17 @@
+/* Color-rich album-inspired keepsake update. */
+.memory-export-actions {display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px}
+.memory-export-actions .photobooth-entry {margin:0}
+.keepsake-sheet {position:relative;z-index:1;background:#e6eceb;color:#384f5d;border:1px solid #a9bac2;border-radius:18px;padding:24px;width:min(940px,calc(100vw - 28px));max-height:min(90vh,900px);overflow-y:auto;box-shadow:0 25px 90px #43576838}
+.keepsake-sheet h2 {font:600 clamp(29px,4vw,43px) Quicksand,sans-serif;letter-spacing:-.04em;margin:8px 0 20px}
+.keepsake-sheet h2 em {font-family:Caveat,cursive;font-weight:500;color:#577d93}
+.keepsake-layout {display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,.7fr);gap:30px;align-items:center}
+.keepsake-preview-frame {width:min(100%,390px);margin:auto;padding:8px;background:#d0dddb;box-shadow:0 15px 35px #364e5b37;transform:rotate(-.65deg)}
+.keepsake-preview-canvas {display:block;width:100%;height:auto;aspect-ratio:4/5;background:#7799a6}
+.keepsake-controls {display:flex;flex-direction:column;gap:10px}
+.keepsake-controls label {font-size:12px;font-weight:700;letter-spacing:.03em}
+.keepsake-controls select,.keepsake-controls textarea {background:#f8f8f2;border:1px solid #a9bcc5;border-radius:9px;padding:11px;color:#334f5d;font:14px Quicksand,sans-serif;max-width:100%;width:100%}
+.keepsake-controls select:focus-visible,.keepsake-controls textarea:focus-visible {outline:2px solid #668c9e;outline-offset:2px}
+.keepsake-hint {font-size:12px;color:#607c8c;line-height:1.6}
+.keepsake-controls .primary-action {width:100%}
+@media(max-width:660px){.keepsake-sheet{padding:18px}.keepsake-layout{grid-template-columns:1fr;gap:20px}.keepsake-preview-frame{max-width:280px}.keepsake-controls{gap:8px}.keepsake-sheet h2{margin-bottom:12px}}
+@media(prefers-reduced-motion:reduce){.keepsake-preview-frame{transform:none}}

@@ -1,0 +1,14 @@
+{
+    "id": "./",
+    "name": "3 Years and Counting",
+    "short_name": "3 Years and Counting",
+    "description": "Our anniversary dashboard",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#eef3f8",
+    "theme_color": "#eef3f8",
+    "icons": [
+        { "src": "assets/orbit.svg", "sizes": "any 192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+    ]
+}

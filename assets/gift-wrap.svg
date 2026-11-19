@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 440" width="540" height="440">
+  <defs>
+    <linearGradient id="front" x1="0" x2="0.95" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#90b0d9"/><stop offset=".5" stop-color="#a9c4e6"/><stop offset="1" stop-color="#749acc"/></linearGradient>
+    <linearGradient id="side" x2="1" y2="1"><stop stop-color="#7396cb"/><stop offset="1" stop-color="#476d9e"/></linearGradient>
+    <linearGradient id="top" x2=".1" y2="1"><stop stop-color="#d5e4f7"/><stop offset="1" stop-color="#9cbbe3"/></linearGradient>
+    <linearGradient id="ribbon" x2="1" y2=".3"><stop stop-color="#abbfe7"/><stop offset=".37" stop-color="#fcf6fb"/><stop offset=".66" stop-color="#e8dbef"/><stop offset="1" stop-color="#a6b7dc"/></linearGradient>
+    <linearGradient id="loop" x2=".8" y2=".9"><stop stop-color="#faf6ff"/><stop offset=".46" stop-color="#dbd3ef"/><stop offset=".8" stop-color="#819bc9"/><stop offset="1" stop-color="#f5eafa"/></linearGradient>
+    <radialGradient id="shadow"><stop stop-color="#4c6999" stop-opacity=".27"/><stop offset="1" stop-color="#4c6999" stop-opacity="0"/></radialGradient>
+    <pattern id="paper" width="51" height="44" patternUnits="userSpaceOnUse"><path d="M13 14v8m-4-4h8M38 35v4m-2-2h4" fill="none" stroke="#edf5ff" stroke-opacity=".57" stroke-linecap="round"/><circle cx="34" cy="7" r="1" fill="#e9f0fc" opacity=".75"/></pattern>
+    <filter id="soft"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <ellipse cx="273" cy="387" rx="200" ry="48" fill="url(#shadow)"/>
+  <path d="M125 205 292 234 292 387 128 348Z" fill="url(#front)" stroke="#6d92c3"/>
+  <path d="M292 234 422 172 419 321 292 387Z" fill="url(#side)" stroke="#6488b7"/>
+  <path d="M126 205 292 234 292 387 128 348Z" fill="url(#paper)" opacity=".75"/>
+  <path d="M292 234 422 172 419 321 292 387Z" fill="url(#paper)" opacity=".41"/>
+  <path d="M121 172 280 113 429 149 290 213Z" fill="url(#top)" stroke="#91b0d9"/>
+  <path d="M121 172 290 213 290 246 121 213Z" fill="#a8c5e9" stroke="#759ac9"/>
+  <path d="M290 213 429 149 429 183 290 246Z" fill="#6e94c8" stroke="#678ab9"/>
+  <path d="M121 172 280 113 429 149 290 213Z" fill="url(#paper)"/>
+  <path d="M122 174 290 214 428 150" stroke="#f0f5ff" stroke-opacity=".69" fill="none"/>
+  <path d="M187 189 334 126 366 134 219 196 222 369 191 362Z" fill="url(#ribbon)" stroke="#c7c9e5" stroke-width=".7"/>
+  <path d="M165 152 323 192 322 371 350 357 352 179 192 143Z" fill="url(#ribbon)" stroke="#e0daec" stroke-width=".7"/>
+  <path d="M191 198 218 203M325 190l25-11" stroke="#fffbff" stroke-opacity=".65"/>
+  <ellipse cx="263" cy="163" rx="69" ry="12" transform="rotate(3 263 163)" fill="#345786" opacity=".32" filter="url(#soft)"/>
+  <path d="M261 146c-14 9-30 26-54 35l5-13-15-2c20-4 40-15 56-26m13 5c18 11 43 23 68 24l-14 7 7 15c-25-8-47-23-66-40" fill="url(#ribbon)" stroke="#9faed1"/>
+  <path d="M258 139C226 87 174 65 163 92c-12 32 47 55 94 54Z" fill="url(#loop)" stroke="#a5b4d5"/>
+  <path d="M253 139c-30-34-78-48-82-37-5 14 55 40 82 37Z" fill="#657ea8" opacity=".65"/>
+  <path d="M264 137c29-44 92-72 108-50 16 22-41 57-106 58Z" fill="url(#loop)" stroke="#a5b4d5"/>
+  <path d="M270 138c31-33 89-51 95-41 6 11-62 43-95 41Z" fill="#667fa9" opacity=".66"/>
+  <path d="M250 134c7-7 15-6 22-1 6 6 2 14-4 17-8 3-16 1-22-2-2-4 0-12 4-14Z" fill="url(#ribbon)" stroke="#a5b5d8"/>
+  <path d="M268 146c8 28 46 52 78 84" fill="none" stroke="#e5d2b8" stroke-width="2"/>
+</svg>
