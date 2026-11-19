@@ -262,6 +262,7 @@ h1 em { color: var(--accent); font-style: normal; }
 .elapsed { display: flex; justify-content: space-between; color: var(--muted); font-size: .72rem; font-weight: 650; font-variant-numeric: tabular-nums; }
 .player-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 9px; }
 .transport { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.playlist-toggle { display: none; }
 .transport .play-button { width: 45px; height: 45px; border-radius: 50%; }
 .play-button, .play-button:hover { background: var(--accent); color: var(--on-accent); }
 .play-button .icon { width: 23px; height: 23px; }
@@ -630,10 +631,20 @@ dialog::backdrop { background: #08132982; backdrop-filter: blur(5px); }
     .anniversary .counter small { margin-top: 3px; }
     .bento { display: flex; flex-direction: column; gap: 11px; }
     .card { padding: 14px; border-radius: 18px; }
+    .player { height: 400px; flex: 0 0 400px; }
     .player-body { grid-template-columns: minmax(70px, 110px) minmax(0, 1fr); gap: 13px; margin: 11px 0 8px; }
     .track-copy { --lyric-height: 7rem; }
     .track-title { margin-bottom: 5px; }
     .player-actions { margin-top: 4px; }
+    .player-actions { position: relative; display: flex; justify-content: center; align-items: center; min-height: 42px; margin-top: 4px; }
+    .transport { width: 100%; justify-content: center; }
+    .playlist-toggle { position: absolute; top: 50%; right: 0; z-index: 1; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; transform: translateY(-50%); border: 1px solid var(--player-border); border-radius: 12px; background: var(--surface-alt); color: var(--accent); transition: background-color var(--theme-speed), border-color var(--theme-speed), color var(--theme-speed), transform 160ms ease; }
+    .playlist-toggle .icon { width: 19px; height: 19px; }
+    .playlist-toggle[aria-expanded="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+    .playlist-toggle:hover { border-color: var(--accent); }
+    .playlist { position: absolute; z-index: 2; right: 0; bottom: calc(100% + 7px); display: none; grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, 300px); gap: 6px; padding: 8px; border: 1px solid var(--player-border); border-radius: 13px; background: var(--surface); box-shadow: 0 8px 24px var(--shadow); }
+    .playlist.is-open { display: grid; }
+    .track-option { justify-content: flex-start; width: 100%; min-width: 0; white-space: nowrap; }
     .icon-button { width: 42px; height: 42px; }
     .envelopes { grid-template-columns: 1fr; }
     .gallery { grid-auto-columns: clamp(122px, 42%, 168px); }
@@ -672,7 +683,13 @@ dialog::backdrop { background: #08132982; backdrop-filter: blur(5px); }
     .card { padding: 11px; }
     .track-option { font-size: .68rem; gap: 4px; padding-inline: 4px; }
     .track-option img { width: 18px; height: 18px; }
-    .player-body { grid-template-columns: 74px minmax(0, 1fr); }
+    .ambience img.active { opacity: .3; }
+    .player-body { grid-template-columns: 66px minmax(0, 1fr); gap: 9px; margin-block: 10px 8px; }
+    .cover { border-radius: 9px; }
+    .track-copy { --lyric-height: 6rem; }
+    .track-title { font-size: clamp(1.8rem, 9vw, 2rem); }
+    .lyric-window { font-size: .84rem; line-height: 1.2; }
+    .transport { justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }

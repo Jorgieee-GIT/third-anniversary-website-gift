@@ -377,7 +377,9 @@ async function playAudio() {
         hasPlayedAudio = true;
         updateMiniPlayer();
     } catch (error) {
-        if (requestedTrack === trackIndex && error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
+        if (requestedTrack === trackIndex && error.name === 'NotAllowedError') {
+            showTrackError('Tap play to start the soundtrack.');
+        } else if (requestedTrack === trackIndex && error.name !== 'AbortError') {
             showTrackError('Couldn’t play this song. Tap play to try again.');
         }
     }
@@ -394,7 +396,11 @@ function togglePlayback() {
 
 function setTrack(index, autoplay = false) {
     const track = config.tracks[index];
-    if (!track || trackIndex === index) return;
+    if (!track) return;
+    if (trackIndex === index) {
+        if (autoplay) playAudio();
+        return;
+    }
 
     const root = document.documentElement;
     const previousTrack = config.tracks[trackIndex];
@@ -406,6 +412,7 @@ function setTrack(index, autoplay = false) {
     $('#themeColor').content = track.palette.page;
 
     trackIndex = index;
+    save('selectedTrack', index);
     visibleCue = null;
     $('#trackCover').src = track.cover;
     $('#miniCover').src = track.cover;
@@ -434,7 +441,7 @@ function setTrack(index, autoplay = false) {
 
 function stepTrack(direction) {
     const next = (trackIndex + direction + config.tracks.length) % config.tracks.length;
-    setTrack(next, !audio.paused);
+    setTrack(next, true);
 }
 
 function buildPlayer() {
@@ -447,13 +454,21 @@ function buildPlayer() {
         button.type = 'button';
         button.setAttribute('aria-pressed', 'false');
         button.append(image(track.cover), create('span', '', track.title));
-        button.addEventListener('click', () => setTrack(index, !audio.paused));
+        button.addEventListener('click', () => {
+            setTrack(index, true);
+            $('#playlist').classList.remove('is-open');
+            $('#playlistToggle').setAttribute('aria-expanded', 'false');
+        });
         $('#playlist').append(button);
         trackButtons.push(button);
     });
     $('#prevTrack').addEventListener('click', () => stepTrack(-1));
     $('#nextTrack').addEventListener('click', () => stepTrack(1));
     $('#playTrack').addEventListener('click', togglePlayback);
+    $('#playlistToggle').addEventListener('click', (event) => {
+        const isOpen = $('#playlist').classList.toggle('is-open');
+        event.currentTarget.setAttribute('aria-expanded', String(isOpen));
+    });
     $('#miniPlay').addEventListener('click', togglePlayback);
     $('#returnPlayer').addEventListener('click', () => {
         $('#player').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -777,7 +792,9 @@ function openGift(remember = false) {
         $('#dashboardTitle').focus({ preventScroll: true });
         window.scrollTo(0, 0);
     }
-    setTrack(0, true);
+    const preferredTrack = saved('selectedTrack', 0);
+    const trackToRestore = Number.isInteger(preferredTrack) && preferredTrack >= 0 && preferredTrack < config.tracks.length ? preferredTrack : 0;
+    setTrack(trackToRestore, true);
     refreshWeather();
     tick();
 }
